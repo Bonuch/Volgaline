@@ -1,0 +1,61 @@
+<template>
+    <div class="base-drop-file">
+        <input class="hidden base-drop-file__input" type="file" multiple :id="id" v-bind="$attrs" v-on="listeners"/>
+
+        <label
+            :for="id"
+            class="base-drop-file-label button button-transparent flex items-center mr-10 bg-transparent text-blue-300 border-blue-300 hover:bg-blue-300 text-white sm:mr-0 xs:justify-center"
+        >
+            <svg class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    class="fill-current"
+                    fill-rule="evenodd" clip-rule="evenodd"
+                    d="M17.9014 5.59917C16.6858 4.38361 14.715 4.38361 13.4995 5.59916L7.52177 11.5768C7.13125 11.9674 6.49809 11.9674 6.10756 11.5768C5.71704 11.1863 5.71704 10.5532 6.10756 10.1626L12.0852 4.18495C14.0818 2.18835 17.319 2.18835 19.3156 4.18495C21.3122 6.18155 21.3122 9.41868 19.3156 11.4153L10.1214 20.6095C8.56282 22.168 6.03587 22.168 4.47728 20.6095C2.9187 19.0509 2.91871 16.5239 4.47728 14.9653L13.4805 5.9621C14.6011 4.84154 16.4179 4.84154 17.5384 5.9621C18.659 7.08266 18.659 8.89945 17.5384 10.02L11.7517 15.8068C11.3612 16.1973 10.728 16.1973 10.3375 15.8068C9.94694 15.4162 9.94694 14.7831 10.3375 14.3925L16.1242 8.60579C16.4637 8.26628 16.4637 7.71582 16.1242 7.37631C15.7847 7.0368 15.2342 7.0368 14.8947 7.37631L5.8915 16.3795C5.11397 17.1571 5.11397 18.4177 5.8915 19.1952C6.66903 19.9728 7.92966 19.9728 8.70719 19.1952L17.9014 10.0011C19.1169 8.78552 19.1169 6.81472 17.9014 5.59917Z"
+                    fill="#0C73FE"
+                />
+            </svg>
+
+            <span class="text-xl mob:text-lg">Прикрепить файл</span>
+        </label>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "BaseDropFile",
+        inheritAttrs: false,
+        props: {
+            id: {
+                type: [Number, String],
+            },
+        },
+        data() {
+            return {
+                files: null,
+            };
+        },
+        computed: {
+            listeners () {
+                return {
+                    ...this.$listeners,
+                    ...{ change: (event) => this.handleFileUpload(event) }
+                }
+            }
+        },
+        methods: {
+            handleFileUpload(e) {
+                const target = e.target;
+                const files = target.files;
+
+                if (files) {
+                    this.files = [...files];
+                    this.$emit("on-file-change", this.files);
+                }
+            },
+        },
+    };
+</script>
+
+<style scoped>
+
+</style>
